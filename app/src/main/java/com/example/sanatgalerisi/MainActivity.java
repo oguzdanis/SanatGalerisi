@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.add_sanat){
             Intent intent = new Intent(getApplicationContext(),Main2Activity.class);
+            intent.putExtra("info","yeni");
             startActivity(intent);
 
         }

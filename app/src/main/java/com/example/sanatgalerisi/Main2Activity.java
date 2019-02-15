@@ -4,17 +4,23 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class Main2Activity extends AppCompatActivity {
 
     ImageView imageView;
+    EditText editText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,21 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         imageView = findViewById(R.id.imageView);
+        editText = findViewById(R.id.editText);
+        Button saveButton = findViewById(R.id.button);
+
+        Intent intent = getIntent();
+        String info = intent.getStringExtra("info");
+        if(info.equals("yeni")){
+
+            Bitmap ekle = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.ekle);
+            imageView.setImageBitmap(ekle);
+            saveButton.setVisibility(View.VISIBLE);
+            editText.setText("");
+
+        }else{
+            saveButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void select(View view){
@@ -33,6 +54,17 @@ public class Main2Activity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent,1);
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode ==2){
+            if (grantResults.length >0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,1);
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
